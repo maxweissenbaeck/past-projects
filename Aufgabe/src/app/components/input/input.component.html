@@ -1,0 +1,40 @@
+<style>
+  button {
+    margin: 10px 10px 20px 00px;
+  }
+  #error{
+    color: red;
+  }
+</style>
+
+<div>
+  <h3>My Numbers</h3>
+  <form #inputForm="ngForm">
+    <ul>
+      <li *ngFor="let number of numbers">
+        <span>{{number}}</span>
+      </li>
+    </ul>
+    <div class="form-group">
+      <input name="inputValue" class="form-control" [formControl]="inputControl" [(ngModel)]="inputValue" />
+      <!-- Leider funktioniert die Validierung mit type=number nicht ganz, da man trotzdem den Buchstaben 'e' und Punkte schreiben kann
+        + die Validators.pattern() dann nicht mehr funktioniert
+
+        input name="inputValue" type="number" class="form-control" [formControl]="inputControl" [(ngModel)]="inputValue" /-->
+      <div *ngIf="inputControl.invalid && (inputControl.dirty || inputControl.touched)" class="alert alert-danger">
+        <p id="error">Bitte geben Sie nur eine Zahl zwischen 1 und 1000 ein!</p>
+      </div>
+    </div>
+    <button type="button" name="addNumber" (click)="addNumber(inputControl.value)" [disabled]="numbers.length>=10 || inputControl.invalid || !inputControl.value">Add number</button>
+    <button type="button" name="addRandomNumber" (click)="addRandomNumber()" [disabled]="numbers.length>=10">Add random number</button>
+    <button type="button" name="deleteNumbers" (click)="deleteNumbers()">Delete numbers</button>
+    <button type="button" name="sortNumbers" (click)="sortNumbers()">Sort</button>
+    <button type="button" name="sortNumbersReversed" (click)="sortNumbersReversed()">Sort reverse</button>
+    <p>__________________________________________________________________________________________________________</p>
+    <div>
+      <button type="button" name="addNumber" (click)="smallestNumber()" [disabled]="!numbers.length">Show smallest number</button>
+      <button type="button" name="addNumber" (click)="biggestNumber()" [disabled]="!numbers.length">Show biggest number</button>
+    </div>
+    <input placeholder="Output" [value]="outputValue" [disabled]="true" />
+  </form>
+</div>
